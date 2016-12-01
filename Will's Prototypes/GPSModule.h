@@ -9,6 +9,7 @@
 #define GPSMODULE_H
 
 #include <string>
+#include <iostream>
 
 class GPSModule
 {
@@ -132,6 +133,13 @@ public:
     *	@return : None
     */
   void updatePosition(std::string newLine);
+
+  /**
+    *	@pre : Existing GPSModule, current data variables initialized
+    *	@post : Outputs to the screen, showing LAT, LON, direction, altitude, and time (perhaps gradient?)
+    *	@return : None
+    */
+  void writeToScreen(float LAT, float LON, float alt, char direction);
 
   /**
     *	@pre : Existing GPSModule, current data variables initialized

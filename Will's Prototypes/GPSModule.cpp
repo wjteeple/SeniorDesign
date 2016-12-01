@@ -133,7 +133,16 @@ void GPSModule::updatePosition(std::string newLine)
 
 } // end function updatePosition
 
+void GPSModule::writeToScreen(float LAT, float LON, float alt, char direction)
+{
+
+
+} // end function writeToLog
+
 void GPSModule::writeToLog(float LAT, float LON, float alt, char direction)
 {
+  // log entry template
+  // TIME&DATE, LAT: ___, LON: ___, Dir: _, Alt: ___, Radar Statue: On/Off
+
 
 } // end function writeToLog
