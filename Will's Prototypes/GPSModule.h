@@ -85,6 +85,34 @@ public:
   float* getPreviousCoords();
 
   /**
+    *	@pre : Existing GPSModule, current altitude set
+    *	@post : None
+    *	@return : Returns the current altitude
+    */
+  float getCurrAltitude();
+
+  /**
+    *	@pre : Existing GPSModule
+    *	@post : Sets the current altitude
+    *	@return : None
+    */
+  void setCurrAltitude(float alt);
+
+  /**
+    *	@pre : Existing GPSModule, previous altitude set
+    *	@post : None
+    *	@return : Returns athe previous altitude
+    */
+  float getPrevAltitude();
+
+  /**
+    *	@pre : Existing GPSModule
+    *	@post : Sets the previous altitude
+    *	@return : None
+    */
+  void setPrevAltitude(float alt);
+
+  /**
     *	@pre : Existing GPSModule, current direction set
     *	@post : None
     *	@return : Returns a character that correspondes to the current direction

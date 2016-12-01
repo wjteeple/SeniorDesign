@@ -81,7 +81,7 @@ bool GPSModule::checkInnerWindow()
 
 bool GPSModule::checkOuterWindow()
 {
-  if ((currentCoords[0] < outerLATmin || outer[0] > outerLATmax) ||
+  if ((currentCoords[0] < outerLATmin || currentCoords[0] > outerLATmax) ||
       (currentCoords[1] < outerLONmin || currentCoords[1] > outerLONmax) )
     return true;
   else
@@ -97,6 +97,26 @@ float* GPSModule::getPreviousCoords()
 {
   return previousCoords;
 } // end function getPreviousCoords
+
+float GPSModule::getCurrAltitude()
+{
+  return currAltitude;
+}
+
+void GPSModule::setCurrAltitude(float alt)
+{
+  currAltitude = alt;
+}
+
+float GPSModule::getPrevAltitude()
+{
+  return prevAltitude;
+}
+
+void GPSModule::setPrevAltitude(float alt)
+{
+  prevAltitude = alt;
+}
 
 char GPSModule::getCurrDirection()
 {
