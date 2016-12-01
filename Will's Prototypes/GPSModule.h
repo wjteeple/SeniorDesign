@@ -18,8 +18,8 @@ public:
     *	@post : Creates an object of type GPSModule with start coordinates set
     *	@return : None
     */
-  GPSModule(float inXmin, float inXmax, float inYmin, float inYmax,
-            float outXmin, float outXmax, float outYmin, float outYmax);
+  GPSModule(float inLATmin, float inLATmax, float inLONmin, float inLONmax,
+            float outLATmin, float outLATmax, float outLONmin, float outLONmax);
 
   /**
     *	@pre : None
@@ -40,7 +40,7 @@ public:
     *	@post : Sets all values of the inner window
     *	@return : None
     */
-  void setInnerWindow(int* windowCoords);
+  void setInnerWindow(float latmin, float latmax, float lonmin, float lonmax);
 
   /**
     *	@pre : Exising GPSModule with initialized outer window coordinates
@@ -54,7 +54,7 @@ public:
     *	@post : Sets all values of the outer window
     *	@return : None
     */
-  void setOuterWindow(int* windowCoords);
+  void setOuterWindow(float latmin, float latmax, float lonmin, float lonmax);
 
   /**
     *	@pre : Existing GPSModule, inner window coords set
@@ -115,13 +115,15 @@ public:
 private:
   //location variables
   float currentLON, currentLAT, previousLON, previousLAT; // current and previous coords
-  float currAltitude, prevAltitude; //current altitude
+  float* currentCoords;
+  float* previousCoords;
 
+  float currAltitude, prevAltitude; //current altitude
   char currDirection, prevDirection; // current direction
 
   //window variables
-  float innerXmin, innerXmax, innerYmin, innerYmax; // inner window mins/maxs
-  float outerXmin, outerXmax, outerYmin, outerYmax; // outer window mins/maxs
+  float innerLATmin, innerLATmax, innerLONmin, innerLONmax; // inner window mins/maxs
+  float outerLATmin, outerLATmax, outerLONmin, outerLONmax; // outer window mins/maxs
   float* innerWindow; // [xmin, xmax, ymin, ymax]
   float* outerWindow; // [xmin, xmax, ymin, ymax]
 

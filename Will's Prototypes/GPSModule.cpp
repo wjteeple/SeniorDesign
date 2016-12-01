@@ -7,23 +7,36 @@
 
 #include "GPSModule.h"
 
-GPSModule::GPSModule(float inXmin, float inXmax, float inYmin, float inYmax,
-          float outXmin, float outXmax, float outYmin, float outYmax)
+GPSModule::GPSModule(float inLATmin, float inLATmax, float inLONmin, float inLONmax,
+                     float outLATmin, float outLATmax, float outLONmin, float outLONmax)
 {
   innerWindow = new float[4];
   outerWindow = new float[4];
 
   //set inner window
-  innerXmin = innerWindow[0] = inXmin;
-  innerXmax = innerWindow[1] = inXmax;
-  innerYmin = innerWindow[2] = inYmin;
-  innerYmax = innerWindow[3] = inYmax;
+  innerLATmin = innerWindow[0] = inLATmin;
+  innerLATmax = innerWindow[1] = inLATmax;
+  innerLONmin = innerWindow[2] = inLONmin;
+  innerLONmax = innerWindow[3] = inLONmax;
 
   //set outer window
-  outerXmin = outerWindow[0] = outXmin;
-  outerXmax = outerWindow[1] = outXmax;
-  outerYmin = outerWindow[2] = outYmin;
-  outerYmax = outerWindow[3] = outYmax;
+  outerLATmin = outerWindow[0] = outLATmin;
+  outerLATmax = outerWindow[1] = outLATmax;
+  outerLONmin = outerWindow[2] = outLONmin;
+  outerLONmax = outerWindow[3] = outLONmax;
+
+  currentCoords = new float[2];
+  previousCoords = new float[2];
+
+  //initialize default positions
+  currentLAT = currentCoords[0] = 0.0; currentLON = currentCoords[1] = 0.0;
+  previousLAT = previousCoords[0] = 0.0; previousLON = previousCoords[1] = 0.0;
+  currAltitude = 0.0; prevAltitude = 0.0;
+  currDirection = ' '; prevDirection = ' ';
+
+  //initialize default flags
+  insideInnerWindow = false;
+  outsideOuterWindow = false;
 
 } // end constructor
 
@@ -31,65 +44,68 @@ GPSModule::~GPSModule()
 {
   delete [] outerWindow;
   delete [] innerWindow;
+  delete [] currentCoords;
+  delete [] previousCoords;
 } // end destructor
 
 float* GPSModule::getInnerWindow()
 {
-  float* test = new float[2];; // [xmin, xmax, ymin, ymax]
-
-  return test;
+  return innerWindow;
 } // end function getInnerWindow
 
-void GPSModule::setInnerWindow(int* windowCoords)
+void GPSModule::setInnerWindow(float latmin, float latmax, float lonmin, float lonmax)
 {
-
+  innerWindow[0] = latmin; innerWindow[1] = latmax;
+  innerWindow[2] = lonmin; innerWindow[3] = lonmax;
 } // end function setInnerWindow
 
 float* GPSModule::getOuterWindow()
 {
-  float* test = new float[2];
-
-  return test;
+  return outerWindow;
 } // end function getOuterWindow
 
-void GPSModule::setOuterWindow(int* windowCoords)
+void GPSModule::setOuterWindow(float latmin, float latmax, float lonmin, float lonmax)
 {
-
+  outerWindow[0] = latmin; outerWindow[1] = latmax;
+  outerWindow[2] = lonmin; outerWindow[3] = lonmax;
 } // end function setOuterWindow
 
 bool GPSModule::checkInnerWindow()
 {
-  return false;
+  if ((currentCoords[0] >= innerLATmin && currentCoords[0] <= innerLATmax) &&
+      (currentCoords[1] >= innerLONmin && currentCoords[1] <= innerLONmax) )
+    return true;
+  else
+    return false;
 } // end function checkInnerWindow
-
 
 bool GPSModule::checkOuterWindow()
 {
-  return false;
+  if ((currentCoords[0] < outerLATmin || outer[0] > outerLATmax) ||
+      (currentCoords[1] < outerLONmin || currentCoords[1] > outerLONmax) )
+    return true;
+  else
+    return false;
 } // end function checkOuterWindow
 
 float* GPSModule::getCurrentCoords()
 {
-  float* test = new float[2];
-
-  return test;
+  return currentCoords;
 } // end function getCurrentCoords
 
 float* GPSModule::getPreviousCoords()
 {
-  float* test = new float[2];
-
-  return test;
+  return previousCoords;
 } // end function getPreviousCoords
 
 char GPSModule::getCurrDirection()
 {
-  return 't';
+  return currDirection;
 } // end function getCurrDirection
 
 char GPSModule::getPrevDirection()
 {
- return 't';
+ return prevDirection;
 } // end function getPrevDirection
 
 void GPSModule::updatePosition(std::string newLine)

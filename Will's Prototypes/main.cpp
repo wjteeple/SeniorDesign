@@ -11,7 +11,7 @@
 int main()
 {
   std::cout << "Welcome to your GPS Module!\n\n";
-  
+
   GPSModule gps(2.0, 3.0, 2.0, 3.0, 1.0, 4.0, 1.0, 4.0);
 
   return 0;
