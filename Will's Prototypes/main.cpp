@@ -6,6 +6,8 @@
   */
 
 #include <iostream>
+#include <unistd.h>
+#include <fcntl.h>
 #include "GPSModule.h"
 
 int main()
