@@ -41,6 +41,13 @@ GPSModule::GPSModule(float inLATmin, float inLATmax, float inLONmin, float inLON
   insideInnerWindow = false;
   outsideOuterWindow = false;
 
+  //initialize default char positions
+  latStartPosition = 0;
+  lonStartPosition = 0;
+  altStartPosition = 0;
+  latStringLength;
+  lonStringLength;
+
 } // end constructor
 
 GPSModule::~GPSModule()
@@ -149,15 +156,15 @@ void GPSModule::updatePosition(std::string S)
 	std::string prefix_match = "$GPGGA";
 	if(!S.compare(0, prefix_match.size(), prefix_match))   // Input string starts with "$GPGGA"
 	{
-		currentLON = std::stof(S.substr(32,12));
-		currentLAT = std::stof(S.substr(17,12));
-		currDirectionLON = S[30];
-		currDirectionLAT = S[46];
+		currentLON = std::stof(S.substr(30,8));
+		currentLAT = std::stof(S.substr(17,8));
+		currDirectionLON = S[40];
+		currDirectionLAT = S[27];
 		
 		/// TO PRINT TO SCREEN:
-		std::cout << std::setprecision(12) << currentLAT << '\n';
-		std::cout << std::setprecision(12) << currentLON << '\n';
-		std::cout << '\n' << currDirectionLON << "   " << currDirectionLAT << std::endl;	
+		std::cout << std::setprecision(9) << currentLAT << " " << currDirectionLAT << '\n';
+		std::cout << std::setprecision(8) << currentLON << " " <<  currDirectionLON << '\n' << std::endl;
+		 
 	}	
 } // end function updatePosition
 
@@ -166,7 +173,7 @@ void GPSModule::writeToLog(float LAT, float LON, float alt, char direction)
 
 } // end function writeToLog
 
-void FPSModule::findCoordPositionsInString(std::string S)
+void GPSModule::findCoordPositionsInString(std::string S)
 {
-
+	
 } // end function findCoordPositionsInString

@@ -177,6 +177,8 @@ private:
   int latStartPosition;
   int lonStartPosition;
   int altStartPosition;
+  int latStringLength;
+  int lonStringLength;
 };
 
 #endif

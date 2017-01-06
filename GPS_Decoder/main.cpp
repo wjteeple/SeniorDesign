@@ -13,9 +13,12 @@
 
 int main()
 {
-	float latInMin, latInMax, lonInMin, lonInMax, latOutMin, latOutMax, lonOutMin, lonOutMax;
+	float latInMin=1, latInMax=1, lonInMin=1, lonInMax=1, latOutMin=1, latOutMax=1, lonOutMin=1, lonOutMax =1;
 
-	//program initialization
+
+
+	//program initializatio
+/**
 	std::cout << "Welcome to GPS test program!\n";
 	std::cout << "Enter inner window latitude MIN: "; std::cin >> latInMin;
 	std::cout << "Enter inner window latitude MAX: "; std::cin >> latInMax;
@@ -25,7 +28,7 @@ int main()
 	std::cout << "Enter outer window latitude MAX: "; std::cin >> latOutMax;
 	std::cout << "Enter outer window longitude MIN: "; std::cin >> lonOutMin;
 	std::cout << "Enter outer window longitude MAX: "; std::cin >> lonOutMax;
-	
+	**/
 	//initialize GPS handler
 	GPSModule gps(latInMin, latInMax, lonInMin, lonInMax, latOutMin, latOutMax, lonOutMin, lonOutMax);
 
