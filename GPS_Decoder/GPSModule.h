@@ -172,6 +172,11 @@ private:
   //flags
   bool insideInnerWindow; // flag for entering the inner window
   bool outsideOuterWindow; // flag for leaving the outer window
+
+  //string positions
+  int latStartPosition;
+  int lonStartPosition;
+  int altStartPosition;
 };
 
 #endif
