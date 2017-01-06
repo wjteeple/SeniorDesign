@@ -121,17 +121,17 @@ void GPSModule::setPrevAltitude(float alt)
   prevAltitude = alt;
 }
 
-/**
+/*
 char GPSModule::getCurrDirection()
 {
   return currDirection;
 } // end function getCurrDirection
+
 char GPSModule::getPrevDirection()
 {
  return prevDirection;
 } // end function getPrevDirection
-**/
-/**
+
 void GPSModule::parsePositionString(std::string S)
 {
 	std::string prefix_match = "$GPGGA";
@@ -143,7 +143,7 @@ void GPSModule::parsePositionString(std::string S)
 	}
 	std::cout << std::endl;	
 } // end function parsePositionString
-**/
+*/
 void GPSModule::updatePosition(std::string S)
 {
 	std::string prefix_match = "$GPGGA";
@@ -159,9 +159,14 @@ void GPSModule::updatePosition(std::string S)
 		std::cout << std::setprecision(12) << currentLON << '\n';
 		std::cout << '\n' << currDirectionLON << "   " << currDirectionLAT << std::endl;	
 	}	
-}
+} // end function updatePosition
 
 void GPSModule::writeToLog(float LAT, float LON, float alt, char direction)
 {
 
 } // end function writeToLog
+
+void FPSModule::findCoordPositionsInString(std::string S)
+{
+
+} // end function findCoordPositionsInString
