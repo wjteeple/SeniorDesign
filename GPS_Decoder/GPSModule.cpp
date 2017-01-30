@@ -45,8 +45,8 @@ GPSModule::GPSModule(float inLATmin, float inLATmax, float inLONmin, float inLON
   latStartPosition = 0;
   lonStartPosition = 0;
   altStartPosition = 0;
-  latStringLength;
-  lonStringLength;
+  latStringLength = 0;
+  lonStringLength = 0;
 
 } // end constructor
 
@@ -175,5 +175,40 @@ void GPSModule::writeToLog(float LAT, float LON, float alt, char direction)
 
 void GPSModule::findCoordPositionsInString(std::string S)
 {
-	
+	latStringLength = -1;
+	lonStringLength = -1;
+	int count = 0;
+	bool pos;
+
+	for (int i = 0; i < s.length(); i++)
+	{
+		pos = false;
+
+		if (s[i] == ',')
+		{	
+			count++;
+			pos = true;
+		}
+
+		switch (count)
+		{
+			case 2:
+				latStartPosition = ((pos) ? i + 1 : latStartPosition);
+				latStringLength++;
+				break;
+			case 3: 
+				currDirectionLAT = ((pos) ? s[i+1] : currDirectionLAT);
+				break;
+			case 4:
+				//TODO mark LON position, start length increment
+				break;
+			case 5:
+				//TODO mark LON direction
+				break;
+			//TODO further string extraction
+			default:
+				break; 
+		}	
+		
+	}
 } // end function findCoordPositionsInString
