@@ -114,12 +114,7 @@ float GPSModule::getCurrAltitude()
 {
   return currAltitude;
 }
-/**
-void GPSModule::setCurrAltitude(float alt)
-{
-  currAltitude = alt;
-}
-**/
+
 float GPSModule::getPrevAltitude()
 {
   return prevAltitude;
@@ -132,28 +127,23 @@ void GPSModule::setPrevAltitude(float alt)
 
 void GPSModule::updatePosition(std::string S)
 {
-	std::string prefix_match = "$GPGGA";
 	gpsStringCounter++;
-
-	if(!S.compare(0, prefix_match.size(), prefix_match))   // Input string starts with "$GPGGA"
-	{
-		currentLON = std::stof(S.substr(lonStartPosition,lonStringLength));
-		currentLAT = std::stof(S.substr(latStartPosition,latStringLength));
-		currDirectionLON = S[lonDirectionPosition];
-		currDirectionLAT = S[latDirectionPosition];
+	currentLON = std::stof(S.substr(lonStartPosition,lonStringLength));
+	currentLAT = std::stof(S.substr(latStartPosition,latStringLength));
+	currDirectionLON = S[lonDirectionPosition];
+	currDirectionLAT = S[latDirectionPosition];
 		
-		/// TO PRINT TO SCREEN:
-		std::cout << gpsStringCounter << std::endl;
-		std::cout << std::setprecision(12) << currentLAT << " " << currDirectionLAT << " ";
-		std::cout << std::setprecision(12) << currentLON << " " <<  currDirectionLON << '\n' << std::endl;
-		 
-	}	
-} // end function updatePosition
+/// TO PRINT TO SCREEN:
+	std::cout << gpsStringCounter << std::endl;
+	std::cout << std::setprecision(12) << currentLAT << " " << currDirectionLAT << " ";
+	std::cout << std::setprecision(12) << currentLON << " " <<  currDirectionLON << '\n' << std::endl;
+	
+}
 
 void GPSModule::writeToLog(float LAT, float LON, float alt, char direction)
 {
 /**
-	TODO: WRITE LOG FUNCTION IF REQUIRED
+	TODO: WRITE WRITETOLOG FUNCTION IF REQUIRED
 **/
 } 
 
@@ -190,10 +180,9 @@ void GPSModule::findCoordPositionsInString(std::string s)
 			case 5:
 				lonDirectionPosition = ((pos) ? i+1 : lonDirectionPosition);
 				break;
-			//TODO further string extraction
-			default:
-				break; 
-		}	
-		
+				
+			//TODO further string extraction -- ALTITUDE?
+
+		}			
 	}
 } // end function findCoordPositionsInString
