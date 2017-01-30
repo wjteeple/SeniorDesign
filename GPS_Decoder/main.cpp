@@ -49,7 +49,8 @@ int main()
 			if (gpsString != "")
 			{
 				std::cout << gpsString;
-				gps.updatePosition(gpsString);
+				//gps.updatePosition(gpsString);
+				gps.findCoordPositionsInString(gpsString);
 			}
 			gpsString = "$";
 		}
