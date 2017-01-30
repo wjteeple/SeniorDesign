@@ -17,7 +17,7 @@ int main()
 
 
 
-	//program initializatio
+	//program initialization
 /**
 	std::cout << "Welcome to GPS test program!\n";
 	std::cout << "Enter inner window latitude MIN: "; std::cin >> latInMin;
@@ -48,9 +48,11 @@ int main()
 		{
 			if (gpsString != "")
 			{
-				std::cout << gpsString;
-				//gps.updatePosition(gpsString);
-				gps.findCoordPositionsInString(gpsString);
+			//	std::cout << gpsString;
+			//	std::cout << gps.gpsStringCounter << std::endl;
+				if(gps.gpsStringCounter == 0 || gps.gpsStringCounter % 50 == 0)
+					gps.findCoordPositionsInString(gpsString);
+				gps.updatePosition(gpsString);
 			}
 			gpsString = "$";
 		}
@@ -59,8 +61,10 @@ int main()
 			gpsString += c;
 		}
 		
-	} while(true);
+	} while(1); 
 
+//	gps.findCoordPositionsInString("$GPGGA,153246.00,6912.4672388,N,04853.5908227,W,1,12,0.96,1272.3322,M,37.2038,M,,*7F");
+//	gps.updatePosition("$GPGGA,153246.00,6912.4672388,N,04853.5908227,W,1,12,0.96,1272.3322,M,37.2038,M,,*7F");
 	//TODO: Close serial port???
 
 	return 0;

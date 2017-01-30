@@ -153,6 +153,7 @@ public:
     *	@return : None
     */
   void findCoordPositionsInString(std::string S);
+  int gpsStringCounter;
 
 private:
   //location variables
@@ -176,9 +177,11 @@ private:
   //string positions
   int latStartPosition;
   int lonStartPosition;
+  int lonDirectionPosition, latDirectionPosition;
   int altStartPosition;
   int latStringLength;
   int lonStringLength;
+  
 };
 
 #endif
