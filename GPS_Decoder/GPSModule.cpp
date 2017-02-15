@@ -7,14 +7,14 @@
 
 #include "GPSModule.h"
 #include <iostream>
-#include <iomanip> 
+#include <iomanip>
 
 GPSModule::GPSModule(float inLATmin, float inLATmax, float inLONmin, float inLONmax,
                      float outLATmin, float outLATmax, float outLONmin, float outLONmax)
 {
   innerWindow = new float[4];
   outerWindow = new float[4];
-  
+
   gpsStringCounter = 0;
 
   //set inner window
@@ -36,7 +36,7 @@ GPSModule::GPSModule(float inLATmin, float inLATmax, float inLONmin, float inLON
   currentLAT = currentCoords[0] = 0.0; currentLON = currentCoords[1] = 0.0;
   previousLAT = previousCoords[0] = 0.0; previousLON = previousCoords[1] = 0.0;
   currAltitude = 0.0; prevAltitude = 0.0;
-  currDirectionLAT = ' '; currDirectionLON = ' '; 
+  currDirectionLAT = ' '; currDirectionLON = ' ';
   prevDirectionLAT = ' '; prevDirectionLON = ' ';
 
   //initialize default flags
@@ -132,12 +132,12 @@ void GPSModule::updatePosition(std::string S)
 	currentLAT = std::stof(S.substr(latStartPosition,latStringLength));
 	currDirectionLON = S[lonDirectionPosition];
 	currDirectionLAT = S[latDirectionPosition];
-		
+
 /// TO PRINT TO SCREEN:
 	std::cout << gpsStringCounter << std::endl;
 	std::cout << std::setprecision(12) << currentLAT << " " << currDirectionLAT << " ";
 	std::cout << std::setprecision(12) << currentLON << " " <<  currDirectionLON << '\n' << std::endl;
-	
+
 }
 
 void GPSModule::writeToLog(float LAT, float LON, float alt, char direction)
@@ -145,7 +145,7 @@ void GPSModule::writeToLog(float LAT, float LON, float alt, char direction)
 /**
 	TODO: WRITE WRITETOLOG FUNCTION IF REQUIRED
 **/
-} 
+}
 
 void GPSModule::findCoordPositionsInString(std::string s)
 {
@@ -154,12 +154,12 @@ void GPSModule::findCoordPositionsInString(std::string s)
 	int count = 0;
 	bool pos;
 
-	for (int i = 0; i < s.length(); i++)
+	for (unsigned int i = 0; i < s.length(); i++)
 	{
 		pos = false;
 
 		if (s[i] == ',')
-		{	
+		{
 			count++;
 			pos = true;
 		}
@@ -170,7 +170,7 @@ void GPSModule::findCoordPositionsInString(std::string s)
 				latStartPosition = ((pos) ? i + 1 : latStartPosition);
 				latStringLength++;
 				break;
-			case 3: 
+			case 3:
 				latDirectionPosition = ((pos) ? i+1 : latDirectionPosition);
 				break;
 			case 4:
@@ -180,9 +180,9 @@ void GPSModule::findCoordPositionsInString(std::string s)
 			case 5:
 				lonDirectionPosition = ((pos) ? i+1 : lonDirectionPosition);
 				break;
-				
+
 			//TODO further string extraction -- ALTITUDE?
 
-		}			
+		}
 	}
 } // end function findCoordPositionsInString
