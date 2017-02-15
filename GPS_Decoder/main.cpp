@@ -68,7 +68,8 @@ int main()
 		}
 
 	} while(true);
-	//TODO: Close USB port???
+
+	close(gpsSerial);
 
 	return 0;
 }
