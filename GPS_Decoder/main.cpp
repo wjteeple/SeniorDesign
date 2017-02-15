@@ -8,6 +8,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <fcntl.h>
+#include <ctype.h>
 #include <string>
 #include "GPSModule.h"
 
@@ -33,7 +34,9 @@ int main()
 	GPSModule gps(latInMin, latInMax, lonInMin, lonInMax, latOutMin, latOutMax, lonOutMin, lonOutMax);
 
 	//open serial input for GPS device
-	int gpsSerial = open("/dev/ttyS0", O_RDONLY);
+	// /dev/ttyS0
+	// /dev/sdb or /dev/sdb1
+	int gpsSerial = open("/dev/ttyUSB0", O_RDONLY);
 	char c = ' ';	
 	std::string gpsString = "";
 	
@@ -46,7 +49,7 @@ int main()
 		//check for new GPS string
 		if (c == '$')
 		{
-			if (gpsString != "")
+			if (gpsString.find('$') != std::string::npos)
 			{
 				if(gps.gpsStringCounter % 5 == 0)
 					gps.findCoordPositionsInString(gpsString);
@@ -54,13 +57,13 @@ int main()
 			}
 			gpsString = "$";
 		}
-		else
+		else if (isalnum(c) || c ==',')
 		{
 			gpsString += c;
 		}
 		
-	} while(1); 
-	//TODO: Close serial port???
+	} while(true); 
+	//TODO: Close USB port???
 
 	return 0;
 }
