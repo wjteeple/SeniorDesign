@@ -17,7 +17,7 @@ int main()
 	float latInMin=1, latInMax=1, lonInMin=1, lonInMax=1, latOutMin=1, latOutMax=1, lonOutMin=1, lonOutMax =1;
 
 	//program initialization
-	/**
+	
 	std::cout << "Welcome to GPS test program!\n";
 	std::cout << "Enter inner window latitude MIN: "; std::cin >> latInMin;
 	std::cout << "Enter inner window latitude MAX: "; std::cin >> latInMax;
@@ -27,7 +27,7 @@ int main()
 	std::cout << "Enter outer window latitude MAX: "; std::cin >> latOutMax;
 	std::cout << "Enter outer window longitude MIN: "; std::cin >> lonOutMin;
 	std::cout << "Enter outer window longitude MAX: "; std::cin >> lonOutMax;
-	**/
+
 
 	//open serial input for GPS device
 	// /dev/ttyS0
@@ -49,16 +49,24 @@ int main()
 	{
 		//read in each character
 		read(gpsSerial, &c, 1);
-		std::cout << c << std::endl;
 		//check for new GPS string
 		if (c == '$')
 		{
 			if (gpsString.find('$') != std::string::npos)
 			{
 				if(gps.gpsStringCounter % 5 == 0)
-					//gps.findCoordPositionsInString(gpsString);
-				//gps.updatePosition(gpsString);
-				std::cout << gpsString << std::endl;
+					gps.findCoordPositionsInString(gpsString);
+				gps.updatePosition(gpsString);
+                                std::cout << std::endl;
+                                if(gps.checkInnerWindow())
+                                    std::cout << "INSIDE INNER WINDOW, ";
+                                else
+                                    std::cout << "OUTSIDE INNER WINDOW, ";
+                                if(gps.checkOuterWindow())
+                                    std::cout <<"INSIDE OUTER WINDOW";
+                                else
+                                    std::cout <<"OUTSIDE OUTER WINDOW";
+                                std::cout << std::endl;
 			}
 			gpsString = "$";
 		}

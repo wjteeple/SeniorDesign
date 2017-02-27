@@ -84,8 +84,8 @@ void GPSModule::setOuterWindow(float latmin, float latmax, float lonmin, float l
 
 bool GPSModule::checkInnerWindow()
 {
-  if ((currentCoords[0] >= innerLATmin && currentCoords[0] <= innerLATmax) &&
-      (currentCoords[1] >= innerLONmin && currentCoords[1] <= innerLONmax) )
+  if ((currentLON >= innerLONmin && currentLON <= innerLONmax) &&
+      (currentLAT >= innerLATmin && currentLAT <= innerLATmax) )
     return true;
   else
     return false;
@@ -93,8 +93,8 @@ bool GPSModule::checkInnerWindow()
 
 bool GPSModule::checkOuterWindow()
 {
-  if ((currentCoords[0] < outerLATmin || currentCoords[0] > outerLATmax) ||
-      (currentCoords[1] < outerLONmin || currentCoords[1] > outerLONmax) )
+  if ((currentLON >= outerLONmin && currentLON <= outerLONmax) &&
+      (currentLAT >= outerLATmin && currentLAT <= outerLATmax) )
     return true;
   else
     return false;
@@ -134,9 +134,9 @@ void GPSModule::updatePosition(std::string S)
 	currDirectionLAT = S[latDirectionPosition];
 
 /// TO PRINT TO SCREEN:
-	std::cout << gpsStringCounter << std::endl;
+	std::cout << "\n#" << gpsStringCounter << std::endl;
 	std::cout << std::setprecision(12) << currentLAT << " " << currDirectionLAT << " ";
-	std::cout << std::setprecision(12) << currentLON << " " <<  currDirectionLON << '\n' << std::endl;
+	std::cout << std::setprecision(12) << currentLON << " " <<  currDirectionLON;
 
 }
 
