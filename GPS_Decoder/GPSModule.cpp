@@ -135,7 +135,7 @@ void GPSModule::updatePosition(std::string S)
 
 /// TO PRINT TO SCREEN:
 	std::cout << "\n#" << gpsStringCounter << std::endl;
-	std::cout << std::setprecision(12) << currentLAT << " " << currDirectionLAT << " ";
+	std::cout << std::setprecision(12) << currentLAT << " " << currDirectionLAT << "    ";
 	std::cout << std::setprecision(12) << currentLON << " " <<  currDirectionLON;
 
 }
