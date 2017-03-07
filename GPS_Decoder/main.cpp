@@ -6,6 +6,7 @@
   */
 
 #include <iostream>
+#include <fstream>
 #include <unistd.h>
 #include <fcntl.h>
 #include <ctype.h>
@@ -18,7 +19,7 @@ int main(int argc,  char** argv)
 
 	//program initialization
         std::cout << std::endl << "Welcome to GPS test program!\n";
-        
+
         if(argc == 9)
         {
             latInMin = std::stof(argv[1]);
@@ -27,9 +28,40 @@ int main(int argc,  char** argv)
             lonInMax = std::stof(argv[4]);
             latOutMin = std::stof(argv[5]);
             latOutMax = std::stof(argv[6]);
-            latOutMin = std::stof(argv[7]);
-            latOutMax = std::stof(argv[8]);
+            lonOutMin = std::stof(argv[7]);
+            lonOutMax = std::stof(argv[8]);
         }
+				else if(argc == 2) // User passed in a text-file input
+				{
+					std::string filename = argv[1];
+					std::ifstream myFile(filename);
+					if(myFile.is_open())
+						std::cout << "Using input from file " << filename << std::endl;
+					else
+					{
+						std::cout << "Unable to open file, try again." << std::endl;
+						return 1;
+					}
+
+					std::string latInMinStr, latInMaxStr, lonInMinStr, lonInMaxStr;
+					std::string latOutMinStr, latOutMaxStr, lonOutMinStr, lonOutMaxStr;
+
+					myFile >> latInMinStr >> latInMaxStr >> lonInMinStr >> lonInMaxStr >> latOutMinStr >> latOutMaxStr >> lonOutMinStr >> lonOutMaxStr;
+
+					latInMin = std::stoi(latInMinStr);
+					latInMax = std::stoi(latInMaxStr);
+					lonInMin = std::stoi(lonInMinStr);
+					lonInMax = std::stoi(lonInMaxStr);
+					latOutMin = std::stoi(latOutMinStr);
+					latOutMax = std::stoi(latOutMaxStr);
+					lonOutMin = std::stoi(lonOutMinStr);
+					lonOutMax = std::stoi(lonOutMaxStr);
+
+					std::cout << "Window coordinates being used:  ";
+					std::cout << latInMin << " " << latInMax << " " << lonInMin << " " << lonInMax;
+					std::cout << " " << latOutMin << " " << latOutMax << " " <<  lonOutMin << " " << lonOutMax << std::endl;
+
+				}
         else if(argc == 1)
         {
             std::cout << "No run-time arguments detected.\n\nEnter inner window latitude MIN: "; std::cin >> latInMin;
