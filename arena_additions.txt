@@ -1,0 +1,129 @@
+//SystemTOHFSounder.h
+//under private members
+
+float m_innerLATmin, m_innerLATmax, m_innerLONmin, m_innerLONmax; // inner window mins/maxs
+float m_outerLATmin, m_outerLATmax, m_outerLONmin, m_outerLONmax; // outer window mins/maxs
+QString m_innerLatChar, m_innerLonChar, m_outerLatChar, m_outerLonChar; //direction for windows
+bool m_insideInnerWindow, m_outsideOuterWindow, m_systemEnabled;
+
+//SystemTOHFSounder.cpp
+
+//to add into CSystemTOHFSounder Constructor
+//NOTE Also implement default vaules from file input
+
+//default values
+m_innerLATmin = 3856.3459; m_innerLATmax = 3857.2273; m_innerLONmin = 9515.3996; m_innerLONmax = 9516.4303;
+m_outerLATmin = 3856.3304; m_outerLATmax = 3857.2395; m_outerLONmin = 9515.3798; m_outerLONmax = 9516.4507;
+m_innerLatChar = "N"; m_innerLonChar = "W"; m_outerLatChar = "N"; m_outerLonChar = "W";
+m_insideInnerWindow = false; m_outsideOuterWindow = true; m_systemEnabled = false;
+
+//to add into CSystemTOHFSounder::receiveSerialData()
+
+//store lat and lon coordinates as floats
+float lat = tempList.at(2).toFloat();
+float lon = tempList.at(4).toFloat();
+//store lat and lon directions as QStrings to match tempList format
+QString latC = tempList.at(3);
+QString lonC = tempList.at(5);
+//booleans to check if directions match for each case
+bool charMatchLatInner = false;
+bool charMatchLonInner = false;
+bool charMatchLatOuter = false;
+bool charMatchLonOuter = false;
+//store the current command state
+CSubSystem::state_pair_t currentStates = GetCmdState();
+
+//check that lat and lon directions are correct
+if (QString::compare(m_innerLatChar, latC, Qt::CaseInsensitive) == 0)
+    charMatchLatInner = true;
+else
+    charMatchLatInner = false;
+if (QString::compare(m_outerLatChar, latC, Qt::CaseInsensitive) == 0)
+    charMatchLatOuter = true;
+else
+    charMatchLatOuter = false;
+if (QString::compare(m_innerLonChar, lonC, Qt::CaseInsensitive) == 0)
+    charMatchLonInner = true;
+else
+    charMatchLonInner = false;
+if (QString::compare(m_outerLonChar, lonC, Qt::CaseInsensitive) == 0)
+    charMatchLonOuter = true;
+else
+    charMatchLonOuter = false;
+
+//testing output
+printf("\nCurrent Coordinates - (Lat, Lon) : (%f, %f)\n", lat, lon);
+printf("Inner Window Range Coordinates - (LatMin - LatMax, LonMin - LonMax) : (%f - %f, %f - %f)\n", m_innerLATmin, m_innerLATmax, m_innerLONmin, m_innerLONmax);
+printf("Outer Window Range Coordinates - (LatMin - LatMax, LonMin - LonMax) : (%f - %f, %f - %f)\n", m_outerLATmin, m_outerLATmax, m_outerLONmin, m_outerLONmax);
+printf("\nCurrent Directions - (Lat Char, Lon Char) : (%s, %s)\n", latC.toStdString().c_str(), lonC.toStdString().c_str());
+printf("Inner Window Directions - (Lat Char, Lon Char) : (%s, %s)\n", m_innerLatChar.toStdString().c_str(), m_innerLonChar.toStdString().c_str());
+printf("Outer Window Directions - (Lat Char, Lon Char) : (%s, %s)\n", m_outerLatChar.toStdString().c_str(), m_outerLonChar.toStdString().c_str());
+
+//check to see if current lat coordinate is within the inner range and direction is correct
+if (lat >= m_innerLATmin && lat <= m_innerLONmax && charMatchLatInner)
+{
+    //check to see if current lon coordinate is within the inner range and direction is correct
+    if (lon >= m_innerLONmin && lon <= m_innerLONmax && charMatchLonInner)
+        m_insideInnerWindow = true;
+    else
+        m_insideInnerWindow = false;
+}
+else
+    m_insideInnerWindow = false;
+
+//check to see if current lat coordinate is outside the outer range and direction is correct
+if (lat < m_outerLATmin || lat > m_outerLONmax || !charMatchLatOuter)
+{
+    //check to see if current lon coordinate is outside the outer range and direction is correct
+    if (lon < m_outerLONmin || lon > m_outerLONmax || !charMatchLonOuter)
+        m_outsideOuterWindow = true;
+    else
+        m_outsideOuterWindow = false;
+}
+else
+    m_outsideOuterWindow = false;
+
+//testing output
+printf("Inner Window Direction Check - (Lat Char Match, Lon Char Match) : (%s, %s)\n", ((charMatchLatInner) ? "True" : "False"), ((charMatchLonInner) ? "True" : "False"));
+printf("Outer Window Direction Check - (Lat Char Match, Lon Char Match) : (%s, %s)\n", ((charMatchLatOuter) ? "True" : "False"), ((charMatchLonOuter) ? "True" : "False"));
+printf("\nSystem Status Before: %s\n", ((m_systemEnabled) ? "On" : "Off"));
+printf("Command States (first, second) : (%d, %d)\n", currentStates.first, currentStates.second);
+
+//enable/disable system based on parameters, but output if logical comparisons end in paradox
+if (m_insideInnerWindow && !m_outsideOuterWindow)
+    m_systemEnabled = true;
+else if (!m_insideInnerWindow && m_outsideOuterWindow)
+    m_systemEnabled = false;
+else
+{
+    //disable system if logical checks fail
+    m_systemEnabled = false;
+    printf("Logical error in window checks.\n");
+}
+
+if (m_systemEnabled)
+{
+    if (currentStates.first != 5 || currentStates.second != 5)
+    {
+        printf("\nTurning System On...\n\n");
+        SetCmdState(qMakePair(5, 5), 1);
+        UpdateCmdCtrl();
+    }
+}
+else
+{
+    if (currentStates.first != -1 || currentStates.second != -1)
+    {
+        printf("\nTurning System Off...\n\n");
+        SetCmdState(qMakePair(-1, -1), 1);
+        UpdateCmdCtrl();
+    }
+}
+
+//for testing
+currentStates = GetCmdState();
+
+//testing output
+printf("System Status After: %s\n", ((m_systemEnabled) ? "On" : "Off"));
+printf("Command States (first, second) : (%d, %d)\n", currentStates.first, currentStates.second);
+printf("\n");
