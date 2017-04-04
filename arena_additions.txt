@@ -1,3 +1,6 @@
+//NOTES: CHANGES MUST BE MADE TO UI FORM IF NOT DONE SO
+//NOTES: UPDATE SYSTEM.XML TO TAKE INPUT FROM TTYUSB0
+
 //SystemTOHFSounder.h
 //under private members
 
@@ -16,6 +19,44 @@ m_innerLATmin = 3856.3459; m_innerLATmax = 3857.2273; m_innerLONmin = 9515.3996;
 m_outerLATmin = 3856.3304; m_outerLATmax = 3857.2395; m_outerLONmin = 9515.3798; m_outerLONmax = 9516.4507;
 m_innerLatChar = "N"; m_innerLonChar = "W"; m_outerLatChar = "N"; m_outerLonChar = "W";
 m_insideInnerWindow = false; m_outsideOuterWindow = true; m_systemEnabled = false;
+
+//to add into CSystemTOHFSounder::TabTimerUpdate()
+
+//if condition
+uiTab->LatMinInner->setEnabled(false);
+uiTab->LatMaxInner->setEnabled(false);
+uiTab->LonMinInner->setEnabled(false);
+uiTab->LonMaxInner->setEnabled(false);
+uiTab->LatMinOuter->setEnabled(false);
+uiTab->LatMaxOuter->setEnabled(false);
+uiTab->LonMinOuter->setEnabled(false);
+uiTab->LonMaxOuter->setEnabled(false);
+uiTab->systemEnabledSlider->setEnabled(false);
+
+//else condition
+uiTab->LatMinInner->setText(QString::number(m_innerLATmin));
+uiTab->LatMinInner->setEnabled(true);
+uiTab->LatMaxInner->setText(QString::number(m_innerLATmax));
+uiTab->LatMaxInner->setEnabled(true);
+uiTab->LonMinInner->setText(QString::number(m_innerLONmin));
+uiTab->LonMinInner->setEnabled(true);
+uiTab->LonMaxInner->setText(QString::number(m_innerLONmax));
+uiTab->LonMaxInner->setEnabled(true);
+
+uiTab->LatMinOuter->setText(QString::number(m_outerLATmin));
+uiTab->LatMinOuter->setEnabled(true);
+uiTab->LatMaxOuter->setText(QString::number(m_outerLATmax));
+uiTab->LatMaxOuter->setEnabled(true);
+uiTab->LonMinOuter->setText(QString::number(m_outerLONmin));
+uiTab->LonMinOuter->setEnabled(true);
+uiTab->LonMaxOuter->setText(QString::number(m_outerLONmax));
+uiTab->LonMaxOuter->setEnabled(true);
+
+if (m_systemEnabled)
+uiTab->systemEnabledSlider->setValue(100);
+else
+uiTab->systemEnabledSlider->setValue(0);
+uiTab->systemEnabledSlider->setEnabled(true);
 
 //to add into CSystemTOHFSounder::receiveSerialData()
 
